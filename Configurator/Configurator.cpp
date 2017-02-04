@@ -236,7 +236,7 @@ void Configurator::onInitDialog(HWND hDlg)
 	{
 		LoadStringW(hInstance, IDS_REGISTRY_VALUE_FIXED, stringBuf, sizeof(stringBuf) / sizeof(wchar_t));
 		MessageBoxW(hDlg, stringBuf, L"Info", MB_ICONINFORMATION | MB_OK);
-		askForReboot = true;
+		restartAudioService = true;
 	}
 }
 
@@ -409,30 +409,42 @@ bool Configurator::onButtonClicked(unsigned sourceId)
 			MessageBoxW(hDlg, stringBuf, L"Info", MB_ICONINFORMATION | MB_OK);
 		}
 		else if (sourceId == IDOK && RegistryHelper::isWindowsVersionAtLeast(6, 3) // Windows 8.1
-			|| askForReboot)
+			|| restartAudioService)
 		{
 			wchar_t captionBuf[255];
-			LoadStringW(hInstance, IDS_SHOULD_REBOOT_CAPTION, captionBuf, sizeof(captionBuf) / sizeof(wchar_t));
+			LoadStringW(hInstance, IDS_RESTART_AUDIO_SERVICE_CAPTION, captionBuf, sizeof(captionBuf) / sizeof(wchar_t));
 			wchar_t stringBuf[255];
-			LoadStringW(hInstance, IDS_SHOULD_REBOOT, stringBuf, sizeof(stringBuf) / sizeof(wchar_t));
+			LoadStringW(hInstance, IDS_RESTART_AUDIO_SERVICE, stringBuf, sizeof(stringBuf) / sizeof(wchar_t));
 			if (MessageBoxW(hDlg, stringBuf, captionBuf, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			{
-				HANDLE tokenHandle;
-				if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &tokenHandle))
+				// TODO: the error handling could be improved - the user would probably like to know if the restart fails.
+				SC_HANDLE serviceManagerHandle = OpenSCManager(NULL, SERVICES_ACTIVE_DATABASE, SC_MANAGER_CONNECT);
+				if (serviceManagerHandle)
 				{
-					LUID luid;
-					if (LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &luid))
+					SC_HANDLE serviceHandle = OpenService(serviceManagerHandle, L"Audiosrv", SERVICE_QUERY_STATUS | SERVICE_START | SERVICE_STOP);
+					if (serviceHandle)
 					{
-						TOKEN_PRIVILEGES tp;
-						tp.PrivilegeCount = 1;
-						tp.Privileges[0].Luid = luid;
-						tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-						if (AdjustTokenPrivileges(tokenHandle, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), NULL, NULL))
-							InitiateShutdownW(NULL, NULL, 0, SHUTDOWN_RESTART | SHUTDOWN_GRACE_OVERRIDE, SHTDN_REASON_MAJOR_APPLICATION | SHTDN_REASON_MINOR_MAINTENANCE);
+						SERVICE_CONTROL_STATUS_REASON_PARAMS params;
+						params.dwReason = SERVICE_STOP_REASON_FLAG_PLANNED | SERVICE_STOP_REASON_MAJOR_APPLICATION | SERVICE_STOP_REASON_MINOR_RECONFIG;
+						params.pszComment = L"Windows audio engine restart triggered by Equalizer APO Configurator";
+						// TODO: normally we should stop dependent services first.
+						//       However, at the time of this writing, on a normal Windows install, the Windows Audio service doesn't have any dependent services.
+						//       Properly stopping dependent services would require a lot more code:
+						//           https://msdn.microsoft.com/en-us/library/windows/desktop/ms686335(v=vs.85).aspx
+						if (ControlServiceEx(serviceHandle, SERVICE_CONTROL_STOP, SERVICE_CONTROL_STATUS_REASON_INFO, &params))
+						{
+							while (params.ServiceStatus.dwCurrentState != SERVICE_STOPPED)
+							{
+								Sleep(params.ServiceStatus.dwWaitHint / 10);
+								DWORD bytesNeeded;
+								if (!QueryServiceStatusEx(serviceHandle, SC_STATUS_PROCESS_INFO, (LPBYTE)&params.ServiceStatus, sizeof(params.ServiceStatus), &bytesNeeded))
+									break;
+							}
+							StartService(serviceHandle, 0, NULL);
+						}
+						CloseServiceHandle(serviceHandle);
 					}
-
-					CloseHandle(tokenHandle);
+					CloseServiceHandle(serviceManagerHandle);
 				}
 			}
 		}
