@@ -102,6 +102,12 @@
       <Filter>filters</Filter>
     </ClCompile>
     <ClCompile Include="..\stdafx.cpp" />
+    <ClCompile Include="..\filters\InvertFilter.cpp">
+      <Filter>filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\filters\InvertFilterFactory.cpp">
+      <Filter>filters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\FilterEngine.h" />
@@ -208,6 +214,12 @@
       <Filter>filters</Filter>
     </ClInclude>
     <ClInclude Include="..\stdafx.h" />
+    <ClInclude Include="..\filters\InvertFilter.h">
+      <Filter>filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\filters\InvertFilterFactory.h">
+      <Filter>filters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="parser">

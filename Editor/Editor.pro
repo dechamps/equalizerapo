@@ -114,7 +114,11 @@ SOURCES += main.cpp\
 	widgets/ExponentialSpinBox.cpp \
 	FilterTableMimeData.cpp \
 	helpers/DPIHelper.cpp \
-	CustomStyle.cpp
+	CustomStyle.cpp \
+	../filters/InvertFilter.cpp \
+	../filters/InvertFilterFactory.cpp \
+	guis/InvertFilterGUI.cpp \
+	guis/InvertFilterGUIFactory.cpp
 
 HEADERS  += \
 	../helpers/LogHelper.h \
@@ -217,7 +221,11 @@ HEADERS  += \
 	widgets/ExponentialSpinBox.h \
 	FilterTableMimeData.h \
 	helpers/DPIHelper.h \
-	CustomStyle.h
+	CustomStyle.h \
+	../filters/InvertFilter.h \
+	../filters/InvertFilterFactory.h \
+	guis/InvertFilterGUI.h \
+	guis/InvertFilterGUIFactory.h
 
 FORMS    += \
 	guis/PreampFilterGUI.ui \
@@ -235,9 +243,10 @@ FORMS    += \
 	guis/GraphicEQFilterGUI.ui \
 	guis/ConvolutionFilterGUI.ui \
 	MainWindow.ui \
-	guis/StageFilterGUI.ui
+	guis/StageFilterGUI.ui \
+	guis/InvertFilterGUI.ui
 
-INCLUDEPATH += $$PWD/.. "C:/Program Files/libsndfile/include" "C:/Program Files/fftw3" "C:/Program Files/muparserx_v3_0_1/parser"
+INCLUDEPATH += $$PWD/.. "C:/Program Files/Mega-Nerd/libsndfile/include" "C:/Program Files/fftw-3.3.5-dll64" "C:/Users/edechamps/Source/muparserx_v3_0_1/parser"
 LIBS += advapi32.lib version.lib ole32.lib Shlwapi.lib authz.lib libsndfile-1.lib libfftw3f-3.lib
 
 build_pass:CONFIG(debug, debug|release) {

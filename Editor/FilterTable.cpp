@@ -42,6 +42,7 @@
 #include "guis/ChannelFilterGUIFactory.h"
 #include "guis/StageFilterGUIFactory.h"
 #include "guis/PreampFilterGUIFactory.h"
+#include "guis/InvertFilterGUIFactory.h"
 #include "guis/BiQuadFilterGUIFactory.h"
 #include "guis/CopyFilterGUIFactory.h"
 #include "guis/DelayFilterGUIFactory.h"
@@ -74,6 +75,7 @@ FilterTable::FilterTable(MainWindow* mainWindow, QWidget* parent)
 	factories.append(new ChannelFilterGUIFactory);
 	factories.append(new StageFilterGUIFactory);
 	factories.append(new PreampFilterGUIFactory);
+	factories.append(new InvertFilterGUIFactory);
 	factories.append(new BiQuadFilterGUIFactory);
 	factories.append(new DelayFilterGUIFactory);
 	factories.append(new CopyFilterGUIFactory);

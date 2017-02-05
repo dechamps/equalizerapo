@@ -186,6 +186,8 @@
     <ClInclude Include="filters\IIRFilter.h" />
     <ClInclude Include="filters\IIRFilterFactory.h" />
     <ClInclude Include="filters\IncludeFilterFactory.h" />
+    <ClInclude Include="filters\InvertFilter.h" />
+    <ClInclude Include="filters\InvertFilterFactory.h" />
     <ClInclude Include="filters\PreampFilter.h" />
     <ClInclude Include="filters\PreampFilterFactory.h" />
     <ClInclude Include="filters\StageFilterFactory.h" />
@@ -232,6 +234,8 @@
     <ClCompile Include="filters\IIRFilter.cpp" />
     <ClCompile Include="filters\IIRFilterFactory.cpp" />
     <ClCompile Include="filters\IncludeFilterFactory.cpp" />
+    <ClCompile Include="filters\InvertFilter.cpp" />
+    <ClCompile Include="filters\InvertFilterFactory.cpp" />
     <ClCompile Include="filters\PreampFilter.cpp" />
     <ClCompile Include="filters\PreampFilterFactory.cpp" />
     <ClCompile Include="filters\StageFilterFactory.cpp" />

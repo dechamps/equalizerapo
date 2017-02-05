@@ -57,6 +57,19 @@ Sets a preamplification value in decibels. This is useful when you are using fil
 	Preamp: -6.5 dB
 
 <br>
+## Invert (since version HEAD)
+**Syntax:**
+Invert:
+
+**Description:**
+Inverts the signal, i.e. reverses its polarity, resulting in a 180 degrees phase difference. This filter doesn't take any parameters, but the colon (":") is still required.
+
+**Example:**
+
+	:::perl
+	Invert:
+
+<br>
 ## Filter
 **Syntax:**
 Filter &lt;n&gt;: ON &lt;Type&gt; Fc &lt;Frequency&gt; Hz Gain &lt;Gain value&gt; dB Q &lt;Q value&gt;

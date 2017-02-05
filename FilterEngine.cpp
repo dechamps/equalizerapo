@@ -48,6 +48,7 @@
 #include "filters/BiQuadFilterFactory.h"
 #include "filters/IIRFilterFactory.h"
 #include "filters/PreampFilterFactory.h"
+#include "filters/InvertFilterFactory.h"
 #include "filters/DelayFilterFactory.h"
 #include "filters/CopyFilterFactory.h"
 #include "filters/IncludeFilterFactory.h"
@@ -83,6 +84,7 @@ FilterEngine::FilterEngine()
 	factories.push_back(new IIRFilterFactory());
 	factories.push_back(new BiQuadFilterFactory());
 	factories.push_back(new PreampFilterFactory());
+	factories.push_back(new InvertFilterFactory());
 	factories.push_back(new DelayFilterFactory());
 	factories.push_back(new CopyFilterFactory());
 	factories.push_back(new ConvolutionFilterFactory());

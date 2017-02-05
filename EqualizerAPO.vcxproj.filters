@@ -105,6 +105,8 @@
       <Filter>filters</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="filters\InvertFilter.cpp" />
+    <ClCompile Include="filters\InvertFilterFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassFactory.h" />
@@ -216,6 +218,8 @@
       <Filter>filters</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="filters\InvertFilter.h" />
+    <ClInclude Include="filters\InvertFilterFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="EqualizerAPO.rc" />
